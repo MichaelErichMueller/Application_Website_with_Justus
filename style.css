@@ -44,9 +44,72 @@ body {
   line-height: 1.6;
 }
 
+body.auth-locked .site-hero,
+body.auth-locked main,
+body.auth-locked .site-footer {
+  display: none;
+}
+
+body:not(.auth-locked) .auth-panel {
+  display: none;
+}
+
 a {
   color: inherit;
   overflow-wrap: anywhere;
+}
+
+.auth-panel {
+  display: grid;
+  min-height: 100vh;
+  padding: clamp(20px, 5vw, 72px);
+  place-items: center;
+}
+
+.auth-box {
+  width: min(100%, 620px);
+  border: 1px solid var(--line);
+  padding: clamp(26px, 5vw, 48px);
+  background: rgba(255, 253, 248, 0.9);
+  box-shadow: var(--shadow);
+}
+
+.auth-box h1 {
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+}
+
+.auth-box p {
+  color: var(--muted);
+}
+
+.auth-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.auth-form label {
+  color: var(--deep);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.auth-form input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: var(--ink);
+  background: var(--white);
+  font: inherit;
+}
+
+.auth-message {
+  min-height: 1.5em;
+  margin: 16px 0 0;
+  font-weight: 700;
 }
 
 .site-hero {
@@ -88,7 +151,21 @@ a {
   transition: transform 180ms ease, background 180ms ease;
 }
 
-.nav-links a:hover {
+.nav-button {
+  border: 1px solid rgba(37, 33, 29, 0.16);
+  border-radius: 999px;
+  padding: 8px 14px;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.nav-links a:hover,
+.nav-button:hover {
   background: var(--white);
   transform: translateY(-2px);
 }
@@ -294,6 +371,14 @@ main {
 .job-list {
   display: grid;
   gap: 18px;
+}
+
+.empty-state {
+  border: 1px solid var(--line);
+  padding: clamp(20px, 3vw, 28px);
+  color: var(--muted);
+  background: rgba(255, 253, 248, 0.82);
+  font-weight: 700;
 }
 
 .job-form {
@@ -579,6 +664,7 @@ main {
   }
 
   .nav-links a,
+  .nav-button,
   .button,
   .job-meta a,
   .document-actions a,

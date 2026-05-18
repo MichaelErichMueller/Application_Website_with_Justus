@@ -3,6 +3,10 @@ const TABLE_NAME = "application_jobs";
 
 const jobList = document.querySelector("#job-list");
 const jobForm = document.querySelector("#job-form");
+const authForm = document.querySelector("#auth-form");
+const authEmail = document.querySelector("#auth-email");
+const authMessage = document.querySelector("#auth-message");
+const logoutButton = document.querySelector("#logout-button");
 const config = window.SUPABASE_CONFIG || {};
 const canUseSupabase = Boolean(
   config.url &&
@@ -27,6 +31,23 @@ const defaultJobs = Array.from(document.querySelectorAll(".job-card")).map((card
 }));
 
 let jobs = [];
+
+function setAuthMessage(message, isError = false) {
+  if (!authMessage) {
+    return;
+  }
+
+  authMessage.textContent = message;
+  authMessage.style.color = isError ? "#9f2f24" : "";
+}
+
+function unlockSite() {
+  document.body.classList.remove("auth-locked");
+}
+
+function lockSite() {
+  document.body.classList.add("auth-locked");
+}
 
 function escapeHtml(value) {
   return String(value)
@@ -92,9 +113,10 @@ async function loadJobs() {
 
   if (error) {
     console.error("Supabase konnte nicht geladen werden:", error);
-    jobs = loadLocalJobs();
+    jobs = [];
+    setAuthMessage("Die Bewerbungsdaten konnten nicht geladen werden.", true);
   } else {
-    jobs = data.length ? data.map(toUiJob) : defaultJobs;
+    jobs = data.map(toUiJob);
   }
 
   renderJobs();
@@ -102,6 +124,16 @@ async function loadJobs() {
 
 function renderJobs() {
   jobList.innerHTML = "";
+
+  if (!jobs.length) {
+    const emptyState = document.createElement("div");
+    emptyState.className = "empty-state";
+    emptyState.textContent = db
+      ? "Keine freigegebenen Bewerbungsdaten gefunden. Prüfe, ob deine E-Mail in Supabase freigegeben ist."
+      : "Noch keine Bewerbungsstellen vorhanden.";
+    jobList.append(emptyState);
+    return;
+  }
 
   jobs.forEach((job, index) => {
     const card = document.createElement("article");
@@ -246,4 +278,76 @@ jobList.addEventListener("click", async (event) => {
   }
 });
 
-loadJobs();
+authForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!db) {
+    unlockSite();
+    return;
+  }
+
+  const email = authEmail.value.trim();
+  if (!email) {
+    return;
+  }
+
+  setAuthMessage("Login-Link wird gesendet...");
+
+  const { error } = await db.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: window.location.href.split("#")[0]
+    }
+  });
+
+  if (error) {
+    setAuthMessage("Der Login-Link konnte nicht gesendet werden.", true);
+    console.error("Supabase Auth Fehler:", error);
+    return;
+  }
+
+  setAuthMessage("Login-Link gesendet. Bitte öffne dein E-Mail-Postfach.");
+});
+
+logoutButton?.addEventListener("click", async () => {
+  if (db) {
+    await db.auth.signOut();
+  }
+
+  jobs = [];
+  renderJobs();
+  lockSite();
+  setAuthMessage("Du wurdest abgemeldet.");
+});
+
+async function startApp() {
+  if (!db) {
+    unlockSite();
+    await loadJobs();
+    return;
+  }
+
+  const { data } = await db.auth.getSession();
+  if (!data.session) {
+    lockSite();
+    return;
+  }
+
+  unlockSite();
+  await loadJobs();
+}
+
+if (db) {
+  db.auth.onAuthStateChange(async (event, session) => {
+    if (event === "SIGNED_IN" && session) {
+      unlockSite();
+      await loadJobs();
+    }
+
+    if (event === "SIGNED_OUT") {
+      lockSite();
+    }
+  });
+}
+
+startApp();

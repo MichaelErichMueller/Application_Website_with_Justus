@@ -16,7 +16,24 @@
     >
     <link rel="stylesheet" href="style.css">
   </head>
-  <body>
+  <body class="auth-locked">
+    <section class="auth-panel" id="auth-panel" aria-labelledby="auth-title">
+      <div class="auth-box">
+        <p class="eyebrow">Geschützter Zugriff</p>
+        <h1 id="auth-title">Bewerbungsseite öffnen</h1>
+        <p>
+          Diese Seite ist nur für freigegebene E-Mail-Adressen sichtbar. Gib deine E-Mail ein
+          und öffne anschließend den Login-Link aus deinem Postfach.
+        </p>
+        <form class="auth-form" id="auth-form">
+          <label for="auth-email">E-Mail-Adresse</label>
+          <input id="auth-email" name="email" type="email" placeholder="name@example.com" required>
+          <button class="button primary" type="submit">Login-Link senden</button>
+        </form>
+        <p class="auth-message" id="auth-message" role="status"></p>
+      </div>
+    </section>
+
     <header class="site-hero">
       <nav class="topbar" aria-label="Hauptnavigation">
         <a class="brand" href="#profil">Bewerbungsprofil</a>
@@ -24,6 +41,7 @@
           <a href="#stellen">IT-Stellen</a>
           <a href="#unterlagen">Unterlagen</a>
           <a href="#kontakt">Kontakt</a>
+          <button class="nav-button" id="logout-button" type="button">Abmelden</button>
         </div>
       </nav>
 

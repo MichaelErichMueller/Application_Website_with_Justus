@@ -33,3 +33,15 @@ Die Website kann Bewerbungsstellen dauerhaft in Supabase speichern.
 5. Die Werte in `supabase-config.js` eintragen.
 
 Ohne Supabase-Konfiguration speichert die Seite nur lokal im Browser.
+
+## Login-Schutz
+
+Für den Login-Schutz:
+
+1. In Supabase unter Authentication > URL Configuration die Live-URL als Site URL setzen:
+   `https://michaelerichmueller.github.io/Application_Website_with_Justus/`
+2. Dieselbe URL bei Redirect URLs ergänzen.
+3. In `supabase-auth-setup.sql` die Platzhalter-E-Mails ersetzen.
+4. Die SQL-Datei im Supabase SQL Editor ausführen.
+
+Danach können nur freigegebene E-Mail-Adressen Bewerbungsstellen lesen oder ändern.
