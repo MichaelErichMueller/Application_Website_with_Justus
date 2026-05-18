@@ -98,11 +98,27 @@
       <section class="jobs-section" id="stellen" aria-labelledby="stellen-title">
         <div class="section-heading compact">
           <p class="eyebrow">Ausgewählte Bewerbungen</p>
-          <h2 id="stellen-title">Stellenlinks mit Motivation</h2>
+          <h2 id="stellen-title">Stellenlinks mit Motivation und Bewerbungsstatus</h2>
         </div>
 
-        <div class="job-list">
-          <article class="job-card featured">
+        <form class="job-form" id="job-form">
+          <div class="form-field">
+            <label for="company">Firma oder Stelle</label>
+            <input id="company" name="company" type="text" placeholder="z. B. Muster GmbH - IT Support" required>
+          </div>
+          <div class="form-field">
+            <label for="job-url">Link zur Stelle</label>
+            <input id="job-url" name="url" type="url" placeholder="https://..." required>
+          </div>
+          <div class="form-field full">
+            <label for="motivation">Warum diese Stelle?</label>
+            <textarea id="motivation" name="motivation" rows="4" placeholder="Kurze Begründung, warum die Stelle zu mir passt." required></textarea>
+          </div>
+          <button class="button primary" type="submit">Stelle hinzufügen</button>
+        </form>
+
+        <div class="job-list" id="job-list">
+          <article class="job-card featured" data-job-id="job-1">
             <div class="job-meta">
               <span>Link 1</span>
               <a class="external-link" href="https://www.linkedin.com/jobs/collections/remote-jobs/?currentJobId=4410637889&discover=true" rel="noreferrer">LinkedIn-Stelle öffnen</a>
@@ -119,9 +135,13 @@
                 macht die Stelle für mich besonders passend.
               </p>
             </div>
+            <div class="status-actions" aria-label="Bewerbungsstatus">
+              <button type="button" data-action="toggle-status">Als beworben markieren</button>
+              <button type="button" data-action="remove-job">Entfernen</button>
+            </div>
           </article>
 
-          <article class="job-card">
+          <article class="job-card" data-job-id="job-2">
             <div class="job-meta">
               <span>Link 2</span>
               <a class="external-link" href="https://de.indeed.com/cmp/Teledyne-Gmbh/jobs?jk=e5534ed499c6c4d7&start=0&clearPrefilter=1" rel="noreferrer">Teledyne bei Indeed öffnen</a>
@@ -138,9 +158,13 @@
                 weitergegeben wurde.
               </p>
             </div>
+            <div class="status-actions" aria-label="Bewerbungsstatus">
+              <button type="button" data-action="toggle-status">Als beworben markieren</button>
+              <button type="button" data-action="remove-job">Entfernen</button>
+            </div>
           </article>
 
-          <article class="job-card">
+          <article class="job-card" data-job-id="job-3">
             <div class="job-meta">
               <span>Link 3</span>
               <a class="external-link" href="https://www.linkedin.com/jobs/search-results/?currentJobId=4410635227&eBP=NOT_ELIGIBLE_FOR_CHARGING&refId=ZfVvPDpexWup1dB1c%2FJtKw%3D%3D&trackingId=zQW6oLx0dATDMn5ZVRjZRw%3D%3D&keywords=KI&origin=JOBS_HOME_SEARCH_BUTTON" rel="noreferrer">KI-Stelle bei LinkedIn öffnen</a>
@@ -155,6 +179,10 @@
                 Probleme auch außerhalb gewohnter Denkmuster zu lösen. Deshalb sehe ich in dieser
                 Stelle eine sehr gute Verbindung zu meinen Fähigkeiten und Interessen.
               </p>
+            </div>
+            <div class="status-actions" aria-label="Bewerbungsstatus">
+              <button type="button" data-action="toggle-status">Als beworben markieren</button>
+              <button type="button" data-action="remove-job">Entfernen</button>
             </div>
           </article>
         </div>
@@ -181,5 +209,6 @@
       <p>Kontakt und persönliche Daten sind im Lebenslauf hinterlegt.</p>
       <a href="assets/documents/aktueller-lebenslauf.pdf">Zum Lebenslauf</a>
     </footer>
+    <script src="script.js"></script>
   </body>
 </html>
