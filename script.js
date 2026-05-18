@@ -301,7 +301,7 @@ authForm?.addEventListener("submit", async (event) => {
   });
 
   if (error) {
-    setAuthMessage("Der Login-Link konnte nicht gesendet werden.", true);
+    setAuthMessage(`Der Login-Link konnte nicht gesendet werden: ${error.message}`, true);
     console.error("Supabase Auth Fehler:", error);
     return;
   }
