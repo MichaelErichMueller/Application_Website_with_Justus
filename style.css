@@ -200,20 +200,16 @@ h3 {
   content: none;
 }
 
-.portrait-placeholder {
-  display: grid;
+.portrait-panel img {
+  display: block;
   width: 100%;
   aspect-ratio: 1;
-  place-items: center;
-  color: var(--white);
-  background:
-    radial-gradient(circle at 30% 24%, rgba(255, 253, 248, 0.24), transparent 32%),
-    linear-gradient(135deg, var(--olive), var(--deep));
+  height: auto;
+  object-fit: cover;
+  object-position: center 18%;
+  filter: saturate(0.96) contrast(1.02);
+  image-rendering: auto;
   box-shadow: var(--shadow);
-  font-family: "Fraunces", serif;
-  font-size: clamp(5rem, 14vw, 8.5rem);
-  font-weight: 700;
-  line-height: 1;
 }
 
 .portrait-panel figcaption {
@@ -358,7 +354,7 @@ main {
   justify-content: center;
   max-width: 100%;
   min-width: 0;
-  border: 1px solid var(--deep);
+  border: 1.5px solid var(--deep);
   border-radius: 999px;
   padding: 10px 16px;
   font-weight: 700;
@@ -369,6 +365,18 @@ main {
   overflow-wrap: anywhere;
   white-space: normal;
   transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.job-meta a,
+.document-actions a {
+  background: var(--white);
+  box-shadow: 0 10px 24px rgba(43, 35, 27, 0.08);
+}
+
+.job-meta a::after {
+  content: "↗";
+  margin-left: 8px;
+  font-weight: 700;
 }
 
 .job-meta a:hover,
