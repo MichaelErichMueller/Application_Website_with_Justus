@@ -6,6 +6,7 @@ create table if not exists public.allowed_emails (
 alter table public.allowed_emails enable row level security;
 alter table public.application_jobs enable row level security;
 
+drop policy if exists "allowed_emails_select_own" on public.allowed_emails;
 drop policy if exists "application_jobs_select" on public.application_jobs;
 drop policy if exists "application_jobs_insert" on public.application_jobs;
 drop policy if exists "application_jobs_update" on public.application_jobs;
@@ -14,6 +15,11 @@ drop policy if exists "application_jobs_select_allowed" on public.application_jo
 drop policy if exists "application_jobs_insert_allowed" on public.application_jobs;
 drop policy if exists "application_jobs_update_allowed" on public.application_jobs;
 drop policy if exists "application_jobs_delete_allowed" on public.application_jobs;
+
+create policy "allowed_emails_select_own"
+on public.allowed_emails for select
+to authenticated
+using (lower(email) = lower(auth.jwt() ->> 'email'));
 
 create policy "application_jobs_select_allowed"
 on public.application_jobs for select
