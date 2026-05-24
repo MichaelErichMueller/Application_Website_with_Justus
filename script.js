@@ -118,8 +118,7 @@ async function loadJobs() {
   const { data, error } = await db
     .from(TABLE_NAME)
     .select("*")
-    .order("sort_order", { ascending: true })
-    .order("created_at", { ascending: true });
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Supabase konnte nicht geladen werden:", error);
