@@ -68,5 +68,6 @@ using (
 
 insert into public.allowed_emails (email)
 values
-  ('Michael.Erich.Mueller@gmx.de')
+  ('Michael.Erich.Mueller@gmx.de'),
+  ('moritz@jafemo.de')
 on conflict (email) do nothing;
