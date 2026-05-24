@@ -6,6 +6,7 @@ const jobForm = document.querySelector("#job-form");
 const authForm = document.querySelector("#auth-form");
 const authEmail = document.querySelector("#auth-email");
 const authMessage = document.querySelector("#auth-message");
+const jobFormMessage = document.querySelector("#job-form-message");
 const logoutButton = document.querySelector("#logout-button");
 const config = window.SUPABASE_CONFIG || {};
 const canUseSupabase = Boolean(
@@ -39,6 +40,15 @@ function setAuthMessage(message, isError = false) {
 
   authMessage.textContent = message;
   authMessage.style.color = isError ? "#9f2f24" : "";
+}
+
+function setJobFormMessage(message, isError = false) {
+  if (!jobFormMessage) {
+    return;
+  }
+
+  jobFormMessage.textContent = message;
+  jobFormMessage.style.color = isError ? "#9f2f24" : "";
 }
 
 function unlockSite() {
@@ -179,11 +189,12 @@ async function addJob(job) {
 
   if (error) {
     console.error("Stelle konnte nicht gespeichert werden:", error);
+    setJobFormMessage(`Stelle konnte nicht gespeichert werden: ${error.message}`, true);
     return;
   }
 
-  jobs = [...jobs, toUiJob(data)];
-  renderJobs();
+  setJobFormMessage("Stelle wurde in Supabase gespeichert.");
+  await loadJobs();
 }
 
 async function updateJob(id, changes) {
@@ -229,6 +240,7 @@ async function removeJob(id) {
 
 jobForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  setJobFormMessage("Stelle wird gespeichert...");
 
   const formData = new FormData(jobForm);
   const title = formData.get("company").trim();
@@ -236,6 +248,7 @@ jobForm.addEventListener("submit", async (event) => {
   const motivation = formData.get("motivation").trim();
 
   if (!title || !url || !motivation) {
+    setJobFormMessage("Bitte alle Felder ausfüllen.", true);
     return;
   }
 

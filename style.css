@@ -428,6 +428,14 @@ main {
   justify-self: start;
 }
 
+.form-message {
+  align-self: center;
+  min-height: 1.5em;
+  margin: 0;
+  color: var(--muted);
+  font-weight: 700;
+}
+
 .job-card {
   display: grid;
   gap: 18px;
