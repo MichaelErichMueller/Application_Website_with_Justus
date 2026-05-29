@@ -1,5 +1,6 @@
 const STORAGE_KEY = "michael-application-jobs";
 const TABLE_NAME = "application_jobs";
+const AUTH_REDIRECT_URL = "https://michaelerichmueller.github.io/Application_Website_with_Justus/";
 
 const jobList = document.querySelector("#job-list");
 const jobForm = document.querySelector("#job-form");
@@ -309,7 +310,7 @@ authForm?.addEventListener("submit", async (event) => {
   const { error } = await db.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: window.location.href.split("#")[0]
+      emailRedirectTo: AUTH_REDIRECT_URL
     }
   });
 
@@ -338,6 +339,20 @@ async function startApp() {
     unlockSite();
     await loadJobs();
     return;
+  }
+
+  const code = new URLSearchParams(window.location.search).get("code");
+  if (code) {
+    setAuthMessage("Login wird abgeschlossen...");
+
+    const { error } = await db.auth.exchangeCodeForSession(code);
+    if (error) {
+      lockSite();
+      setAuthMessage(`Login konnte nicht abgeschlossen werden: ${error.message}`, true);
+      return;
+    }
+
+    window.history.replaceState({}, document.title, AUTH_REDIRECT_URL);
   }
 
   const { data } = await db.auth.getSession();
